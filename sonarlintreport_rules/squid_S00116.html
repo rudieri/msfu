@@ -1,0 +1,15 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>Field names should comply with a naming convention</big> (squid:S00116)</h1><div class="rule-desc"><p>Sharing some naming conventions is a key point to make it possible for a team to efficiently collaborate. This rule allows to check that field
+names match a provided regular expression.</p>
+<h2>Noncompliant Code Example</h2>
+<p>With the default regular expression <code>^[a-z][a-zA-Z0-9]*$</code>:</p>
+<pre>
+class MyClass {
+   private int my_field;
+}
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+class MyClass {
+   private int myField;
+}
+</pre></div></body></html>

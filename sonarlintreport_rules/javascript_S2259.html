@@ -1,0 +1,16 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>Properties of variables with "null" or "undefined" values should not be accessed</big> (javascript:S2259)</h1><div class="rule-desc"><p>When a variable is assigned an <code>undefined</code> or <code>null</code> value, it has no properties. Trying to access properties of such a
+variable anyway results in a <code>TypeError</code>, causing abrupt termination of the script if the error is not caught in a <code>catch</code>
+block. But instead of <code>catch</code>-ing this condition, it is best to avoid it altogether.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+if (x === undefined) {
+  console.log(x.length); // Noncompliant; TypeError will be thrown
+}
+</pre>
+<h2>See</h2>
+<ul>
+  <li> <a href="http://cwe.mitre.org/data/definitions/476.html">MITRE, CWE-476</a> - NULL Pointer Dereference </li>
+  <li> <a href="https://www.securecoding.cert.org/confluence/x/PAw">CERT, EXP34-C.</a> - Do not dereference null pointers </li>
+  <li> <a href="https://www.securecoding.cert.org/confluence/x/ZwDOAQ">CERT, EXP01-J.</a> - Do not use a null in a case where an object is required
+  </li>
+</ul></div></body></html>

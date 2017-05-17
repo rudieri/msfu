@@ -1,0 +1,20 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>Non-existent properties shouldn't be accessed for reading</big> (javascript:S3759)</h1><div class="rule-desc"><p>Reading a non-existent property on a non-<code>undefined</code> and non-<code>null</code> value will return <code>undefined</code>.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+x = 42;
+y = x.length;   // Noncompliant, Number type doesn't have "length" property
+</pre>
+<h2>Exceptions</h2>
+<p>The Ember framework introduces a few extensions to a <code>String</code> built-in. Since it is a widely used package, the following
+<code>String</code> properties will not trigger this rule even though they are not built-in:</p>
+<ul>
+  <li> <code>camelize</code> </li>
+  <li> <code>capitalize</code> </li>
+  <li> <code>classify</code> </li>
+  <li> <code>dasherize</code> </li>
+  <li> <code>decamelize</code> </li>
+  <li> <code>fmt</code> </li>
+  <li> <code>loc</code> </li>
+  <li> <code>underscore</code> </li>
+  <li> <code>w</code> </li>
+</ul></div></body></html>

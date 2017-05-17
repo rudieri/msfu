@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group name="Crepz-PLayer">
+            <file>file:/home/rudieri/ufsm/msfu/linan/AnalizadorLinters/src/br/com/msfu/gui/JAnalizadorLinters.java</file>
+            <file>file:/home/rudieri/ufsm/msfu/linan/AnalizadorLinters/src/br/com/msfu/utils/textfield/JCrepzTextField.java</file>
+        </group>
+        <group name="AnalisadorLinters">
+            <file>file:/home/rudieri/ufsm/msfu/linan/AnalisadorLinters/src/br/com/msfu/utils/textfield/JCrepzTextField.java</file>
+            <file>file:/home/rudieri/ufsm/msfu/linan/AnalisadorLinters/src/br/com/msfu/constantes/Analisadores.java</file>
+            <file>file:/home/rudieri/ufsm/msfu/linan/AnalisadorLinters/src/br/com/msfu/utils/FormatadorCsv.java</file>
+            <file>file:/home/rudieri/ufsm/msfu/linan/AnalisadorLinters/src/br/com/msfu/gui/JAgendadorTestes.java</file>
+            <file>file:/home/rudieri/ufsm/msfu/linan/AnalisadorLinters/src/br/com/msfu/sonar/BateriaExecucoesSonar.java</file>
+        </group>
+    </open-files>
+</project-private>

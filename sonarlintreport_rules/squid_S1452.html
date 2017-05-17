@@ -1,0 +1,8 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>Generic wildcard types should not be used in return parameters</big> (squid:S1452)</h1><div class="rule-desc"><p>Using a wildcard as a return type implicitly means that the return value should be considered read-only, but without any way to enforce this
+contract. </p>
+<p>Let's take the example of method returning a "List&lt;? extends Animal&gt;". Is it possible on this list to add a Dog, a Cat, ... we simply don't
+know. The consumer of a method should not have to deal with such disruptive questions. </p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+List&lt;? extends Animal&gt; getAnimals(){...}
+</pre></div></body></html>

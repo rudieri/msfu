@@ -1,0 +1,16 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>Instance methods should not write to "static" fields</big> (squid:S2696)</h1><div class="rule-desc"><p>Correctly updating a <code>static</code> field from a non-static method is tricky to get right and could easily lead to bugs if there are multiple
+class instances and/or multiple threads in play. Ideally, <code>static</code> fields are only updated from <code>synchronized static</code>
+methods.</p>
+<p>This rule raises an issue each time a <code>static</code> field is updated from a non-static method.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+public class MyClass {
+
+  private static int count = 0;
+
+  public void doSomething() {
+    //...
+    count++;  // Noncompliant
+  }
+}
+</pre></div></body></html>

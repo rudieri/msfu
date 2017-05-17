@@ -1,0 +1,16 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>"assert" should only be used with boolean variables</big> (squid:S3346)</h1><div class="rule-desc"><p>Since <code>assert</code> statements aren't executed by default (they must be enabled with JVM flags) developers should never rely on their
+execution the evaluation of any logic required for correct program function.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+assert myList.remove(myList.get(0));  // Noncompliant
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+boolean removed = myList.remove(myList.get(0));
+assert removed;
+</pre>
+<h2>See</h2>
+<ul>
+  <li> <a href="https://www.securecoding.cert.org/confluence/x/vwG7AQ">CERT, EXP06-J.</a> - Expressions used in assertions must not produce side
+  effects </li>
+</ul></div></body></html>

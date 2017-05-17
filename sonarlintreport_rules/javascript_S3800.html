@@ -1,0 +1,20 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>Functions should always return the same type</big> (javascript:S3800)</h1><div class="rule-desc"><p>Unlike strongly typed languages, JavaScript does not enforce a return type on a function. This means that different paths through a function can
+return different types of values, which can be very confusing to the user and significantly harder to maintain.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+function foo(a) {  // Noncompliant
+  if (a === 1) {
+    return true;
+  }
+  return 3;
+}
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+function foo(a) {
+  if (a === 1) {
+    return true;
+  }
+  return false;
+}
+</pre></div></body></html>

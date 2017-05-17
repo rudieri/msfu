@@ -1,0 +1,10 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>Package names should comply with a naming convention</big> (squid:S00120)</h1><div class="rule-desc"><p>Shared coding conventions allow teams to collaborate efficiently. This rule checks that all package names match a provided regular expression.</p>
+<h2>Noncompliant Code Example</h2>
+<p>With the default regular expression <code>^[a-z]+(\.[a-z][a-z0-9]*)*$</code>:</p>
+<pre>
+package org.exAmple; // Noncompliant
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+package org.example;
+</pre></div></body></html>

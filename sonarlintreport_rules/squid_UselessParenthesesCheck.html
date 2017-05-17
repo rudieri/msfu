@@ -1,0 +1,15 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>Useless parentheses around expressions should be removed to prevent any misunderstanding</big> (squid:UselessParenthesesCheck)</h1><div class="rule-desc"><p>Useless parentheses can sometimes be misleading and so should be removed. </p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+return 3;
+return (x);           // Noncompliant
+return (x + 1);       // Noncompliant
+int x = (y / 2 + 1);  // Noncompliant
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+return 3;
+return x;
+return x + 1;
+int x = y / 2 + 1;
+</pre></div></body></html>

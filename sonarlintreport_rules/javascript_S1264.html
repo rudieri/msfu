@@ -1,0 +1,10 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>A "while" loop should be used instead of a "for" loop</big> (javascript:S1264)</h1><div class="rule-desc"><p>When only the condition expression is defined in a <code>for</code> loop, but the init and increment expressions are missing, a <code>while</code>
+loop should be used instead to increase readability. </p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+for (;condition;) { /*...*/ }
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+while (condition) { /*...*/ }
+</pre></div></body></html>

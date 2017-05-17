@@ -1,0 +1,11 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>Primitive wrappers should not be instantiated only for "toString" or "compareTo" calls</big> (squid:S1158)</h1><div class="rule-desc"><p>Creating temporary primitive wrapper objects only for <code>String</code> conversion or the use of the <code>compareTo</code> method is
+inefficient.</p>
+<p>Instead, the static <code>toString()</code> or <code>compare</code> method of the primitive wrapper class should be used.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+new Integer(myInteger).toString();  // Noncompliant
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+Integer.toString(myInteger);        // Compliant
+</pre></div></body></html>

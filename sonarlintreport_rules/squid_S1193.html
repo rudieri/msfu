@@ -1,0 +1,22 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>Exception types should not be tested using "instanceof" in catch blocks</big> (squid:S1193)</h1><div class="rule-desc"><p>Multiple catch blocks of the appropriate type should be used instead of catching a general exception, and then testing on the type.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+try {
+  /* ... */
+} catch (Exception e) {
+  if(e instanceof IOException) { /* ... */ }         // Noncompliant
+  if(e instanceof NullPointerException{ /* ... */ }  // Noncompliant
+}
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+try {
+  /* ... */
+} catch (IOException e) { /* ... */ }                // Compliant
+} catch (NullPointerException e) { /* ... */ }       // Compliant
+</pre>
+<h2>See</h2>
+<ul>
+  <li> <a href="https://www.securecoding.cert.org/confluence/x/5gFFB">CERT, ERR51-J.</a> - Prefer user-defined exceptions over more general exception
+  types </li>
+</ul></div></body></html>

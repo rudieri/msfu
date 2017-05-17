@@ -1,0 +1,18 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>Deprecated code should be removed</big> (squid:S1133)</h1><div class="rule-desc"><p>This rule is meant to be used as a way to track code which is marked as being deprecated. Deprecated code should eventually be removed.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+class Foo {
+  /**
+   * @deprecated
+   */
+  public void foo() {    // Noncompliant
+  }
+
+  @Deprecated            // Noncompliant
+  public void bar() {
+  }
+
+  public void baz() {    // Compliant
+  }
+}
+</pre></div></body></html>

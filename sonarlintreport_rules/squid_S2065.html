@@ -1,0 +1,16 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>Fields in non-serializable classes should not be "transient"</big> (squid:S2065)</h1><div class="rule-desc"><p><code>transient</code> is used to mark fields in a <code>Serializable</code> class which will not be written out to file (or stream). In a class
+that does not implement <code>Serializable</code>, this modifier is simply wasted keystrokes, and should be removed.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+class Vegetable {  // does not implement Serializable
+  private transient Season ripe;  // Noncompliant
+  // ...
+}
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+class Vegetable {
+  private Season ripe;
+  // ...
+}
+</pre></div></body></html>

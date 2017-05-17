@@ -1,0 +1,11 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>Objects should not be created only to "getClass"</big> (squid:S2133)</h1><div class="rule-desc"><p>Creating an object for the sole purpose of calling <code>getClass</code> on it is a waste of memory and cycles. Instead, simply use the class'
+<code>.class</code> property.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+MyObject myOb = new MyObject();  // Noncompliant
+Class c = myOb.getClass();
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+Class c = MyObject.class;
+</pre></div></body></html>

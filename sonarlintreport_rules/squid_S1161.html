@@ -1,0 +1,24 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>"@Override" should be used on overriding and implementing methods</big> (squid:S1161)</h1><div class="rule-desc"><p>Using the <code>@Override</code> annotation is useful for two reasons :</p>
+<ul>
+  <li> It elicits a warning from the compiler if the annotated method doesn't actually override anything, as in the case of a misspelling. </li>
+  <li> It improves the readability of the source code by making it obvious that methods are overridden. </li>
+</ul>
+<h2>Noncompliant Code Example</h2>
+<pre>
+class ParentClass {
+  public boolean doSomething(){...}
+}
+class FirstChildClass extends ParentClass {
+  public boolean doSomething(){...}  // Noncompliant
+}
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+class ParentClass {
+  public boolean doSomething(){...}
+}
+class FirstChildClass extends ParentClass {
+  @Override
+  public boolean doSomething(){...}  // Compliant
+}
+</pre></div></body></html>

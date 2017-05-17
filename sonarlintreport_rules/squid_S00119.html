@@ -1,0 +1,18 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>Type parameter names should comply with a naming convention</big> (squid:S00119)</h1><div class="rule-desc"><p>Shared naming conventions make it possible for a team to collaborate efficiently. Following the established convention of single-letter type
+parameter names helps users and maintainers of your code quickly see the difference between a type parameter and a poorly named class.</p>
+<p>This rule check that all type parameter names match a provided regular expression. The following code snippets use the default regular
+expression.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+public class MyClass&lt;TYPE&gt; { // Noncompliant
+  &lt;TYPE&gt; void method(TYPE t) { // Noncompliant
+  }
+}
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+public class MyClass&lt;T&gt; {
+  &lt;T&gt; void method(T t) {
+  }
+}
+</pre></div></body></html>

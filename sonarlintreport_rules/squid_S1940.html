@@ -1,0 +1,11 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>Boolean checks should not be inverted</big> (squid:S1940)</h1><div class="rule-desc"><p>It is needlessly complex to invert the result of a boolean comparison. The opposite comparison should be made instead.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+if ( !(a == 2)) { ...}  // Noncompliant
+boolean b = !(i &lt; 10);  // Noncompliant
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+if (a != 2) { ...}
+boolean b = (i &gt;= 10);
+</pre></div></body></html>

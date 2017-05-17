@@ -1,0 +1,20 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>String function use should be optimized for single characters</big> (squid:S3027)</h1><div class="rule-desc"><p>An <code>indexOf</code> or <code>lastIndexOf</code> call with a single letter <code>String</code> can be made more performant by switching to a
+call with a <code>char</code> argument.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+String myStr = "Hello World";
+// ...
+int pos = myStr.indexOf("W");  // Noncompliant
+// ...
+int otherPos = myStr.lastIndexOf("r"); // Noncompliant
+// ...
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+String myStr = "Hello World";
+// ...
+int pos = myStr.indexOf('W');
+// ...
+int otherPos = myStr.lastIndexOf('r');
+// ...
+</pre></div></body></html>

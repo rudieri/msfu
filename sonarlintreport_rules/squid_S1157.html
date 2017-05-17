@@ -1,0 +1,12 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>Case insensitive string comparisons should be made without intermediate upper or lower casing</big> (squid:S1157)</h1><div class="rule-desc"><p>Using <code>toLowerCase()</code> or <code>toUpperCase()</code> to make case insensitive comparisons is inefficient because it requires the creation
+of temporary, intermediate <code>String</code> objects.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+boolean result1 = foo.toUpperCase().equals(bar);             // Noncompliant
+boolean result2 = foo.equals(bar.toUpperCase());             // Noncompliant
+boolean result3 = foo.toLowerCase().equals(bar.LowerCase()); // Noncompliant
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+boolean result = foo.equalsIgnoreCase(bar);                  // Compliant
+</pre></div></body></html>

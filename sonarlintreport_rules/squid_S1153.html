@@ -1,0 +1,14 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>String.valueOf() should not be appended to a String</big> (squid:S1153)</h1><div class="rule-desc"><p>Appending <code>String.valueOf()</code> to a <code>String</code> decreases the code readability.</p>
+<p>The argument passed to <code>String.valueOf()</code> should be directly appended instead.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+public void display(int i){
+  System.out.println("Output is " + String.valueOf(i));    // Noncompliant
+}
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+public void display(int i){
+  System.out.println("Output is " + i);                    // Compliant
+}
+</pre></div></body></html>

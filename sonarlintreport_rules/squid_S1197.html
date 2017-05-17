@@ -1,0 +1,11 @@
+<!doctype html><html><head><link href="rule.css" rel="stylesheet" type="text/css" /></head><body><h1><big>Array designators "[]" should be on the type, not the variable</big> (squid:S1197)</h1><div class="rule-desc"><p>Array designators should always be located on the type for better code readability. Otherwise, developers must look both at the type and the
+variable name to know whether or not a variable is an array.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+int matrix[][];   // Noncompliant
+int[] matrix[];   // Noncompliant
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+int[][] matrix;   // Compliant
+</pre></div></body></html>
