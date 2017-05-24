@@ -19,11 +19,15 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.ListModel;
 
 /**
  *
@@ -31,8 +35,7 @@ import javax.swing.JOptionPane;
  */
 public class JAnalisadorLinter extends javax.swing.JDialog {
 
-       private static final ArrayList<String> LISTA_VAZIA = new ArrayList<>(0);
-    private ParametrosSonar parametros;
+    private static final ArrayList<String> LISTA_VAZIA = new ArrayList<>(0);
 
     /**
      * Creates new form JAnalizadorLinters
@@ -46,6 +49,8 @@ public class JAnalisadorLinter extends javax.swing.JDialog {
         initComponents();
         jButton_Retornar.setVisible(modoAgendamento);
         jButton_Excutar.setVisible(!modoAgendamento);
+        jPanel_Perefil.setVisible(!modoAgendamento);
+        jPanel_Perefis.setVisible(modoAgendamento);
         jComboBox1.removeAllItems();
         Analisadores[] analisadores = Analisadores.values();
         for (int i = 0; i < analisadores.length; i++) {
@@ -91,15 +96,15 @@ public class JAnalisadorLinter extends javax.swing.JDialog {
         try {
             File projeto = new File(jCrepzTextField1.getText());
             Properties sonarProject = new Properties();
-            try(FileInputStream in = new FileInputStream(new File(projeto, "sonar-project.properties"));){
+            try (FileInputStream in = new FileInputStream(new File(projeto, "sonar-project.properties"));) {
                 sonarProject.load(in);
             }
-            
+
             SonarUtils.definirPerfil(sonarProject.getProperty("sonar.projectKey"), (Perfil) jComboBox_Perfil.getSelectedItem());
-            
-            
+
             String[] comando = montarComando((Analisadores) jComboBox1.getSelectedItem(), projeto);
             long tempo = System.currentTimeMillis();
+            System.out.println("Comando: " + Arrays.toString(comando).replaceAll(",", ""));
             Process processo = Runtime.getRuntime().exec(comando, null, projeto);
             int retorno = processo.waitFor();
             if (retorno != 0) {
@@ -111,8 +116,8 @@ public class JAnalisadorLinter extends javax.swing.JDialog {
                     String s = new String(buffer, 0, n);
                     erro.append(s);
                 }
-                
-                JOptionPane.showMessageDialog(this, "Erro ao executar.\n"+erro.toString());
+
+                JOptionPane.showMessageDialog(this, "Erro ao executar.\n" + erro.toString());
             } else {
                 long difTempo = System.currentTimeMillis() - tempo;
                 JOptionPane.showMessageDialog(this, "Execução finalizada em " + difTempo + "ms.");
@@ -125,10 +130,14 @@ public class JAnalisadorLinter extends javax.swing.JDialog {
 
     private void carregarPerfil() {
         try {
+            jList1.setModel(new DefaultListModel<Perfil>());
+            DefaultListModel<Perfil> lm = (DefaultListModel<Perfil>) jList1.getModel();
+            lm.removeAllElements();
             jComboBox_Perfil.removeAllItems();
             ArrayList<Perfil> lista = SonarUtils.listarPerfis();
             for (Perfil perfil : lista) {
                 jComboBox_Perfil.addItem(perfil);
+                lm.addElement(perfil);
             }
         } catch (SQLException ex) {
             Logger.getLogger(JAnalisadorLinter.class.getName()).log(Level.SEVERE, null, ex);
@@ -141,8 +150,16 @@ public class JAnalisadorLinter extends javax.swing.JDialog {
         String strDate = sdf.format(new Date());
         switch (analizador) {
             case SONARLINT:
-
+                Integer nucleos = Integer.valueOf(jSpinner_NucleosMin.getValue().toString());
+                StringBuilder cores = new StringBuilder(nucleos * 2);
+                for (int i = 0; i < nucleos; i++) {
+                    cores.append(i).append(',');
+                }
+                cores.delete(cores.length() - 1, cores.length());
                 String[] comando = new String[]{
+                    "taskset",
+                    "-c",
+                    cores.toString(),
                     "sonarlint",
                     "-u",
                     "--html-report",
@@ -153,20 +170,31 @@ public class JAnalisadorLinter extends javax.swing.JDialog {
                 throw new AssertionError();
         }
     }
-    
-    private void retonarParametros(){
-        parametros = new ParametrosSonar();
-        parametros.setProjeto(jCrepzTextField1.getText());
-        parametros.setNroTestes(Integer.valueOf(jTextField1.getText()));
-        parametros.setPerfil((Perfil) jComboBox_Perfil.getSelectedItem());
-        parametros.setDestinoHtml(jTextField_DestinoRelatorio.getText());
-        dispose();
+
+    private void retonarParametros() {
+        setVisible(false);
     }
 
-    public ParametrosSonar getParametros() {
-        return parametros;
-    }
+    public ArrayList<ParametrosSonar> getParametros() {
+        ArrayList<ParametrosSonar> lista = new ArrayList<>();
+        List<Perfil> perfis = jList1.getSelectedValuesList();
+        for (Perfil perfil : perfis) {
+            int min = (Integer) jSpinner_NucleosMin.getValue();
+            Integer max = (Integer) jSpinner_NucleosMax.getValue();
+            for (int j = min; j <= max; j++) {
+                ParametrosSonar parametro;
+                parametro = new ParametrosSonar();
+                parametro.setProjeto(jCrepzTextField1.getText());
+                parametro.setNroTestes(Integer.valueOf(jTextField1.getText()));
+                parametro.setPerfil(perfil);
+                parametro.setDestinoHtml(jTextField_DestinoRelatorio.getText());
+                parametro.setNucleos(j);
+                lista.add(parametro);
+            }
+        }
 
+        return lista;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -191,9 +219,17 @@ public class JAnalisadorLinter extends javax.swing.JDialog {
         jPanel8 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jTextField_DestinoRelatorio = new javax.swing.JTextField();
-        jPanel10 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jSpinner_NucleosMin = new javax.swing.JSpinner();
+        jLabel7 = new javax.swing.JLabel();
+        jSpinner_NucleosMax = new javax.swing.JSpinner();
+        jPanel_Perefil = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jComboBox_Perfil = new javax.swing.JComboBox<Perfil>();
+        jPanel_Perefis = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
         jPanel6 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
@@ -248,22 +284,53 @@ public class JAnalisadorLinter extends javax.swing.JDialog {
         jLabel4.setPreferredSize(new java.awt.Dimension(95, 17));
         jPanel8.add(jLabel4);
 
-        jTextField_DestinoRelatorio.setText("/home/rudieri/ufsm/msfu/");
+        jTextField_DestinoRelatorio.setText("/home/rudieri/ufsm/relatorios_linters");
         jTextField_DestinoRelatorio.setPreferredSize(new java.awt.Dimension(500, 29));
         jPanel8.add(jTextField_DestinoRelatorio);
 
         jPanel2.add(jPanel8);
 
-        jPanel10.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 3));
+        jPanel11.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 3));
+
+        jLabel6.setText("Nº Núcleos:");
+        jLabel6.setPreferredSize(new java.awt.Dimension(95, 17));
+        jPanel11.add(jLabel6);
+
+        jSpinner_NucleosMin.setModel(new javax.swing.SpinnerNumberModel(1, 1, 8, 1));
+        jSpinner_NucleosMin.setPreferredSize(new java.awt.Dimension(60, 30));
+        jPanel11.add(jSpinner_NucleosMin);
+
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("a ");
+        jLabel7.setPreferredSize(new java.awt.Dimension(50, 17));
+        jPanel11.add(jLabel7);
+
+        jSpinner_NucleosMax.setModel(new javax.swing.SpinnerNumberModel(1, 1, 8, 1));
+        jSpinner_NucleosMax.setPreferredSize(new java.awt.Dimension(60, 30));
+        jPanel11.add(jSpinner_NucleosMax);
+
+        jPanel2.add(jPanel11);
+
+        jPanel_Perefil.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 3));
 
         jLabel5.setText("Perfil:");
         jLabel5.setPreferredSize(new java.awt.Dimension(95, 17));
-        jPanel10.add(jLabel5);
+        jPanel_Perefil.add(jLabel5);
 
         jComboBox_Perfil.setPreferredSize(new java.awt.Dimension(150, 24));
-        jPanel10.add(jComboBox_Perfil);
+        jPanel_Perefil.add(jComboBox_Perfil);
 
-        jPanel2.add(jPanel10);
+        jPanel2.add(jPanel_Perefil);
+
+        jPanel_Perefis.setBorder(javax.swing.BorderFactory.createTitledBorder("Perfis"));
+        jPanel_Perefis.setLayout(new java.awt.BorderLayout());
+
+        jList1.setPreferredSize(new java.awt.Dimension(43, 100));
+        jScrollPane1.setViewportView(jList1);
+
+        jPanel_Perefis.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel2.add(jPanel_Perefis);
 
         jPanel6.setLayout(new java.awt.BorderLayout());
         jPanel2.add(jPanel6);
@@ -306,7 +373,7 @@ public class JAnalisadorLinter extends javax.swing.JDialog {
         retonarParametros();
     }//GEN-LAST:event_jButton_RetornarActionPerformed
 
-   /**
+    /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -353,8 +420,11 @@ public class JAnalisadorLinter extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JList<Perfil> jList1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -363,6 +433,11 @@ public class JAnalisadorLinter extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JPanel jPanel_Perefil;
+    private javax.swing.JPanel jPanel_Perefis;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner jSpinner_NucleosMax;
+    private javax.swing.JSpinner jSpinner_NucleosMin;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField_DestinoRelatorio;
     // End of variables declaration//GEN-END:variables

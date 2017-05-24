@@ -12,6 +12,7 @@ public class ParametrosSonar {
     private String destinoHtml;
     private Integer nroTestes;
     private Perfil perfil;
+    private Integer nucleos;
 
     public String getProjeto() {
         return projeto;
@@ -36,10 +37,18 @@ public class ParametrosSonar {
     public void setNroTestes(Integer nroTestes) {
         this.nroTestes = nroTestes;
     }
+    public void setNucleos(Integer nucleos) {
+        this.nucleos = nucleos;
+    }
+    
+    public Integer getNucleos(){
+        return nucleos;
+    }
 
     public Perfil getPerfil() {
         return perfil;
     }
+
 
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
@@ -48,6 +57,9 @@ public class ParametrosSonar {
     @Override
     public int hashCode() {
         int hash = 7;
+        hash = 31 * hash + Objects.hashCode(this.projeto);
+        hash = 31 * hash + Objects.hashCode(this.perfil);
+        hash = 31 * hash + Objects.hashCode(this.nucleos);
         return hash;
     }
 
@@ -66,9 +78,13 @@ public class ParametrosSonar {
         if (!Objects.equals(this.perfil, other.perfil)) {
             return false;
         }
+        if (!Objects.equals(this.nucleos, other.nucleos)) {
+            return false;
+        }
         return true;
     }
-    
+
+   
     
     
     

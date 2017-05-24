@@ -19,7 +19,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 /**
  *
  * @author rudieri
@@ -28,9 +27,8 @@ public class BateriaExecucoesSonar implements FormatadorCsv {
 
     private final HashMap<ParametrosSonar, ArrayList<ResultadosSonar>> resultados = new HashMap<>();
     private final HashSet<ParametrosSonar> execucoesAgendadas = new HashSet<>();
-    
-    
-    public void agendarExecucao(ParametrosSonar param){
+
+    public void agendarExecucao(ParametrosSonar param) {
         execucoesAgendadas.add(param);
     }
 
@@ -43,13 +41,18 @@ public class BateriaExecucoesSonar implements FormatadorCsv {
     public HashMap<ParametrosSonar, ArrayList<ResultadosSonar>> getResultados() {
         return resultados;
     }
-    
-    public void iniciar() throws IOException, FileNotFoundException, SQLException, InterruptedException{
+
+    public void iniciar() throws IOException, FileNotFoundException, SQLException, InterruptedException {
         for (ParametrosSonar param : execucoesAgendadas) {
             executar(param);
+             System.out.println("--------------------------------");
+            System.out.println("------------PREVIA--------------");
+            System.out.println(getTextoCsv());
+            System.out.println("--------------------------------");
+            System.out.println("--------------------------------");
         }
     }
-    
+
     private void executar(ParametrosSonar param) throws FileNotFoundException, IOException, SQLException, InterruptedException {
         File projeto = new File(param.getProjeto());
         Properties sonarProject = new Properties();
@@ -60,7 +63,7 @@ public class BateriaExecucoesSonar implements FormatadorCsv {
         SonarUtils.definirPerfil(sonarProject.getProperty("sonar.projectKey"), param.getPerfil());
 
         for (int i = 0; i < param.getNroTestes(); i++) {
-            String[] comando = montarComando(projeto, param.getDestinoHtml(), param.getPerfil(), i);
+            String[] comando = montarComando(projeto, param.getDestinoHtml(), param.getPerfil(), param.getNucleos(), i);
 
             long tempo = System.currentTimeMillis();
             ArrayList<ResultadosSonar> lista = resultados.get(param);
@@ -74,16 +77,15 @@ public class BateriaExecucoesSonar implements FormatadorCsv {
             pb.directory(projeto);
             pb.redirectErrorStream(true);
             Process processo = pb.start();
-            try(InputStream in = processo.getInputStream()){
+            try (InputStream in = processo.getInputStream()) {
                 byte[] buffer = new byte[1024];
                 while (in.read(buffer) < 0);
             }
 //            Process processo = Runtime.getRuntime().exec(comando, null, projeto);
 //            Process processo = Runtime.getRuntime().exec(comando, null, projeto);
-            
-            
+
             res.setPid(getPid(processo));
-            
+
             int retorno = processo.waitFor();
             if (retorno != 0) {
                 InputStream err = processo.getErrorStream();
@@ -103,8 +105,8 @@ public class BateriaExecucoesSonar implements FormatadorCsv {
             }
         }
     }
-    
-    private int getPid(Process processo){
+
+    private int getPid(Process processo) {
         try {
             Field[] fields = processo.getClass().getDeclaredFields();
             for (Field field : fields) {
@@ -119,11 +121,18 @@ public class BateriaExecucoesSonar implements FormatadorCsv {
         return -1;
     }
 
-    private String[] montarComando(File projeto, String destino, Perfil perfil, Integer nroTeste) {
+    private String[] montarComando(File projeto, String destino, Perfil perfil, Integer nucleos, Integer nroTeste) {
         SimpleDateFormat sdf = new SimpleDateFormat("MMddHHmm");
         String strDate = sdf.format(new Date());
-
+        StringBuilder cores = new StringBuilder(nucleos * 2);
+        for (int i = 0; i < nucleos; i++) {
+            cores.append(i).append(',');
+        }
+        cores.delete(cores.length() - 1, cores.length());
         String[] comando = new String[]{
+            "taskset",
+            "-c",
+            cores.toString(),
             "sonarlint",
             "-u",
             "--html-report",
@@ -136,14 +145,15 @@ public class BateriaExecucoesSonar implements FormatadorCsv {
     @Override
     public String getTextoCsv() {
         StringBuilder sb = new StringBuilder(8192);
-        sb.append("Nº;Projeto;Perfil;PID;Tempo\n");
+        sb.append("Nº;Projeto;Perfil;Núcleos;PID;Tempo\n");
         for (Map.Entry<ParametrosSonar, ArrayList<ResultadosSonar>> entrySet : resultados.entrySet()) {
             ParametrosSonar param = entrySet.getKey();
             ArrayList<ResultadosSonar> tempos = entrySet.getValue();
             for (int i = 0; i < tempos.size(); i++) {
                 ResultadosSonar res = tempos.get(i);
                 sb.append(i).append(';').append(param.getProjeto()).append(';');
-                sb.append(param.getPerfil().getNome()).append(';').append(res.getPid()).append(';');
+                sb.append(param.getPerfil().getNome()).append(';').append(param.getNucleos()).append(';');
+                sb.append(res.getPid()).append(';');
                 if (res.getErro() != null) {
                     sb.append("-");
                 } else {

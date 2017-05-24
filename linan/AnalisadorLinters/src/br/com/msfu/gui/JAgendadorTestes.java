@@ -6,6 +6,7 @@ import br.com.msfu.sonar.ParametrosSonar;
 import java.awt.Dialog;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,9 +38,11 @@ public class JAgendadorTestes extends javax.swing.JFrame {
     private void adicionarTeste(){
         JAnalisadorLinter jAnalisadorLinters = new JAnalisadorLinter(this, Dialog.ModalityType.DOCUMENT_MODAL, true);
         jAnalisadorLinters.setVisible(true);
-        ParametrosSonar parametros = jAnalisadorLinters.getParametros();
-        if (parametros != null) {
-            bateriaExecucoesSonar.agendarExecucao(parametros);
+        ArrayList<ParametrosSonar> parametros = jAnalisadorLinters.getParametros();
+        if (parametros != null && !parametros.isEmpty()) {
+            for (ParametrosSonar parametro : parametros) {
+                bateriaExecucoesSonar.agendarExecucao(parametro);
+            }
             atualizarTabela();
         }
     }
@@ -52,6 +55,7 @@ public class JAgendadorTestes extends javax.swing.JFrame {
         tm.addColumn("Projeto");
         tm.addColumn("Perfil");
         tm.addColumn("Nº Testes");
+        tm.addColumn("Nº Núcleos");
         tm.addColumn("Obj");
         jTable1.removeColumn(jTable1.getColumn("Obj"));
     }
@@ -65,7 +69,8 @@ public class JAgendadorTestes extends javax.swing.JFrame {
             row[0] = param.getProjeto();
             row[1] = param.getPerfil().getNome();
             row[2] = param.getNroTestes();
-            row[3] = param;
+            row[3] = param.getNucleos();
+            row[4] = param;
             tm.addRow(row);
         }
     }
@@ -74,6 +79,7 @@ public class JAgendadorTestes extends javax.swing.JFrame {
     private void iniciarTestes(){
         try {
             bateriaExecucoesSonar.iniciar();
+            Thread.sleep(1000);
             String textoCsv = bateriaExecucoesSonar.getTextoCsv();
             System.out.println("--------------------------------");
             System.out.println("----------RESULTADOS------------");
