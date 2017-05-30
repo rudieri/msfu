@@ -78,7 +78,7 @@ public class JAgendadorTestes extends javax.swing.JFrame {
     
     private void iniciarTestes(){
         try {
-            bateriaExecucoesSonar.iniciar();
+            bateriaExecucoesSonar.iniciar(jCheckBox1.isSelected());
             Thread.sleep(1000);
             String textoCsv = bateriaExecucoesSonar.getTextoCsv();
             System.out.println("--------------------------------");
@@ -108,6 +108,7 @@ public class JAgendadorTestes extends javax.swing.JFrame {
         jButton_Add = new javax.swing.JButton();
         jButton_Rem = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jCheckBox1 = new javax.swing.JCheckBox();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -120,8 +121,6 @@ public class JAgendadorTestes extends javax.swing.JFrame {
 
             }
         ));
-        jTable1.setCellSelectionEnabled(false);
-        jTable1.setRowSelectionAllowed(true);
         jScrollPane2.setViewportView(jTable1);
 
         getContentPane().add(jScrollPane2, java.awt.BorderLayout.CENTER);
@@ -154,6 +153,9 @@ public class JAgendadorTestes extends javax.swing.JFrame {
         jPanel1.add(jButton_Rem);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.WEST);
+
+        jCheckBox1.setText("Rodar em Paralelo");
+        jPanel2.add(jCheckBox1);
 
         jButton1.setText("Iniciar Testes");
         jButton1.setPreferredSize(new java.awt.Dimension(100, 29));
@@ -221,6 +223,7 @@ public class JAgendadorTestes extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton_Add;
     private javax.swing.JButton jButton_Rem;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;

@@ -1,0 +1,6 @@
+Projeto;Perfil;NTestes;Cores;DestinoHTML
+/home/rudieri/NetBeansProjects/Versionados/CrepzPlayer;Somente Bugs;2;1;/mnt/695f96e3-9d30-4f93-a1a5-2f9262536915/sonar-reports
+paralelo{
+	/home/rudieri/NetBeansProjects/Versionados/CrepzPlayer;Bugs p1;2;1;/mnt/695f96e3-9d30-4f93-a1a5-2f9262536915/sonar-reports
+	/home/rudieri/NetBeansProjects/Versionados/CrepzPlayer;Bugs p2;2;1;/mnt/695f96e3-9d30-4f93-a1a5-2f9262536915/sonar-reports
+}

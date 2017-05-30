@@ -9,9 +9,8 @@
         <group name="AnalisadorLinters">
             <file>file:/home/rudieri/ufsm/msfu/linan/AnalisadorLinters/src/br/com/msfu/constantes/Analisadores.java</file>
             <file>file:/home/rudieri/ufsm/msfu/linan/AnalisadorLinters/src/br/com/msfu/gui/JAgendadorTestes.java</file>
-            <file>file:/home/rudieri/ufsm/msfu/linan/AnalisadorLinters/src/br/com/msfu/gui/JAnalisadorLinter.java</file>
             <file>file:/home/rudieri/ufsm/msfu/linan/AnalisadorLinters/src/br/com/msfu/sonar/BateriaExecucoesSonar.java</file>
-            <file>file:/home/rudieri/ufsm/msfu/linan/AnalisadorLinters/src/br/com/msfu/sonar/ParametrosSonar.java</file>
+            <file>file:/home/rudieri/ufsm/msfu/linan/AnalisadorLinters/src/br/com/msfu/sonar/ExecucoesParalelasSonar.java</file>
             <file>file:/home/rudieri/ufsm/msfu/linan/AnalisadorLinters/src/br/com/msfu/utils/textfield/JCrepzTextField.java</file>
             <file>file:/home/rudieri/ufsm/msfu/linan/AnalisadorLinters/src/br/com/msfu/utils/FormatadorCsv.java</file>
         </group>

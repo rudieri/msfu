@@ -14,11 +14,22 @@ import java.util.ArrayList;
 public class SonarUtils {
 
     public static ArrayList<Perfil> listarPerfis() throws SQLException {
+        return listarPerfis(null);
+    }
+    public static ArrayList<Perfil> listarPerfis(String nome) throws SQLException {
         try (Connection conn = H2BD.getConnection()) {
             Statement st = conn.createStatement();
 
             ArrayList<Perfil> lista = new ArrayList<>();
-            try (ResultSet rs = st.executeQuery("select kee, name from RULES_PROFILES where language = 'java'")) {
+            StringBuilder sql = new StringBuilder();
+            sql.append("select kee, name ");
+            sql.append("from RULES_PROFILES ");
+            sql.append("where language = 'java'");
+            if (nome != null && !nome.isEmpty()) {
+                sql.append("and name = '").append(nome).append('\'');
+            }
+                    
+            try (ResultSet rs = st.executeQuery(sql.toString())) {
                 while (rs.next()) {
                     Perfil perfil = new Perfil(rs.getString("kee"));
                     perfil.setNome(rs.getString("name"));
