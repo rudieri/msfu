@@ -1,0 +1,26 @@
+Projeto;Perfil;NTestes;Cores;DestinoHTML
+/home/rcolbek/projetos/crepz-player;Somante Code Smell;10;1;/home/rcolbek/projetos/reports/
+/home/rcolbek/projetos/crepz-player;Somante Code Smell;10;2;/home/rcolbek/projetos/reports/
+/home/rcolbek/projetos/crepz-player;Somante Code Smell;10;4;/home/rcolbek/projetos/reports/
+/home/rcolbek/projetos/crepz-player;Somante Code Smell;10;8;/home/rcolbek/projetos/reports/
+/home/rcolbek/projetos/crepz-player;Somante Code Smell;10;0;/home/rcolbek/projetos/reports/
+paralelo{
+	/home/rcolbek/projetos/crepz-player;Smell2_1;10;1;/home/rcolbek/projetos/reports/
+	/home/rcolbek/projetos/crepz-player;Smell2_2;10;1;/home/rcolbek/projetos/reports/
+}
+paralelo{
+	/home/rcolbek/projetos/crepz-player;Smell4_1;10;1;/home/rcolbek/projetos/reports/
+	/home/rcolbek/projetos/crepz-player;Smell4_2;10;1;/home/rcolbek/projetos/reports/
+	/home/rcolbek/projetos/crepz-player;Smell4_3;10;1;/home/rcolbek/projetos/reports/
+	/home/rcolbek/projetos/crepz-player;Smell4_4;10;1;/home/rcolbek/projetos/reports/
+}
+paralelo{
+	/home/rcolbek/projetos/crepz-player;Smell8_1;10;1;/home/rcolbek/projetos/reports/
+	/home/rcolbek/projetos/crepz-player;Smell8_2;10;1;/home/rcolbek/projetos/reports/
+	/home/rcolbek/projetos/crepz-player;Smell8_3;10;1;/home/rcolbek/projetos/reports/
+	/home/rcolbek/projetos/crepz-player;Smell8_4;10;1;/home/rcolbek/projetos/reports/
+	/home/rcolbek/projetos/crepz-player;Smell8_5;10;1;/home/rcolbek/projetos/reports/
+	/home/rcolbek/projetos/crepz-player;Smell8_6;10;1;/home/rcolbek/projetos/reports/
+	/home/rcolbek/projetos/crepz-player;Smell8_7;10;1;/home/rcolbek/projetos/reports/
+	/home/rcolbek/projetos/crepz-player;Smell8_8;10;1;/home/rcolbek/projetos/reports/
+}

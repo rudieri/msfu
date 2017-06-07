@@ -1,6 +1,7 @@
 package br.com.msfu.sonar;
 
 import br.com.msfu.gui.JAnalisadorLinter;
+import br.com.msfu.main.AnalizadorTestes;
 import br.com.msfu.utils.FormatadorCsv;
 import java.io.BufferedReader;
 import java.io.File;
@@ -222,29 +223,40 @@ public class BateriaExecucoesSonar implements FormatadorCsv {
     private String[] montarComando(File projeto, String destino, Perfil perfil, Integer nucleos, Integer nroTeste) {
         SimpleDateFormat sdf = new SimpleDateFormat("MMddHHmm");
         String strDate = sdf.format(new Date());
-        StringBuilder cores = new StringBuilder(nucleos * 2);
-        int processors = Runtime.getRuntime().availableProcessors();
-        int count = 0;
-        for (int i = 0; i < processors; i++) {
-            if (!nucleosUsados.contains(i)) {
-                count++;
-                cores.append(i).append(',');
-                nucleosUsados.add(i);
-                if (count == nucleos) {
-                    break;
+        StringBuilder cores= null;
+        String[] comando;
+        if (nucleos > 0) {
+            cores = new StringBuilder(nucleos * 2);
+            int processors = Runtime.getRuntime().availableProcessors();
+            int count = 0;
+            for (int i = 0; i < processors; i++) {
+                if (!nucleosUsados.contains(i)) {
+                    count++;
+                    cores.append(i).append(',');
+                    nucleosUsados.add(i);
+                    if (count == nucleos) {
+                        break;
+                    }
                 }
             }
+            cores.delete(cores.length() - 1, cores.length());
+            comando = new String[]{
+                "taskset",
+                "-c",
+                cores.toString(),
+                AnalizadorTestes.getOpcoes().getProperty("sonar_cmd", "sonarlint"),
+                "-u",
+                "--html-report",
+                destino + "_sonar_" + projeto.getName() + perfil.getKke() + "_" + strDate + "__" + nroTeste + ".html"
+            };
+        } else {
+            comando = new String[]{
+                AnalizadorTestes.getOpcoes().getProperty("sonar_cmd", "sonarlint"),
+                "-u",
+                "--html-report",
+                destino + "_sonar_" + projeto.getName() + perfil.getKke() + "_" + strDate + "__" + nroTeste + ".html"
+            };
         }
-        cores.delete(cores.length() - 1, cores.length());
-        String[] comando = new String[]{
-            "taskset",
-            "-c",
-            cores.toString(),
-            "sonarlint",
-            "-u",
-            "--html-report",
-            destino + "_sonar_" + projeto.getName() + perfil.getKke() + "_" + strDate + "__" + nroTeste + ".html"
-        };
         return comando;
 
     }

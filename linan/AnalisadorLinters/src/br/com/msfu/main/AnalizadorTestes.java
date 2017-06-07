@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,9 +21,18 @@ import java.util.logging.Logger;
  * @author rudieri
  */
 public class AnalizadorTestes {
+    private static Properties opcoes;
 
     @SuppressWarnings("AssignmentToForLoopParameter")
     public static void main(String[] args) {
+        opcoes = new Properties();
+        try {
+            opcoes.load(new FileInputStream("opcoes.properties"));
+            
+        } catch (IOException ex) {
+            Logger.getLogger(AnalizadorTestes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         if (args.length > 0) {
             ArrayList<Object> tarefas = new ArrayList<>();
             String arquivoTeste = args[0];
@@ -37,9 +47,12 @@ public class AnalizadorTestes {
                 // ignoramos o cabeçalho
                 for (int i = 1; i < linhas.length; i++) {
                     String linha = linhas[i].trim();
-                    if (linha.equals("paralelo{")) {
+                    if (linha.isEmpty()) {
+                        continue;
+                    }
+                    if (linha.contains("paralelo{")) {
                         ExecucaoParalelaSonar execucaoParalelaSonar = new ExecucaoParalelaSonar();
-                        for (int j = i + 1; j < linha.length(); j++) {
+                        for (int j = i + 1; j < linhas.length; j++) {
                             String linhaAux = linhas[j].trim();
                             if (linhaAux.equals("}")) {
                                 i = j;
@@ -68,10 +81,10 @@ public class AnalizadorTestes {
                     } else {
                         ParametrosSonar aux = (ParametrosSonar) obj;
                         bateriaExecucoesSonar.agendarExecucao(aux);
-                        if (i == tarefas.size() - 1 || tarefas.get(i + 1) instanceof ExecucaoParalelaSonar) {
+//                        if (i == tarefas.size() - 1 || tarefas.get(i + 1) instanceof ExecucaoParalelaSonar) {
                             bateriaExecucoesSonar.iniciar(true);
                             imprimirResultados(bateriaExecucoesSonar.getTextoCsv());
-                        }
+//                        }
                     }
 
                 }
@@ -83,6 +96,11 @@ public class AnalizadorTestes {
             JAgendadorTestes jAgendadorTestes = new JAgendadorTestes();
             jAgendadorTestes.setVisible(true);
         }
+    }
+
+    @SuppressWarnings("ReturnOfCollectionOrArrayField")
+    public static Properties getOpcoes() {
+        return opcoes;
     }
 
     private static void imprimirResultados(String textoCsv) {
