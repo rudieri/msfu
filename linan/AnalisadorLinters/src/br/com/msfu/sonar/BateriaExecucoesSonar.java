@@ -246,6 +246,7 @@ public class BateriaExecucoesSonar implements FormatadorCsv {
                 cores.toString(),
                 AnalizadorTestes.getOpcoes().getProperty("sonar_cmd", "sonarlint"),
                 "-u",
+                "-Dsonar.issuesReport.lightModeOnly=true",
                 "--html-report",
                 destino + "_sonar_" + projeto.getName() + perfil.getKke() + "_" + strDate + "__" + nroTeste + ".html"
             };
